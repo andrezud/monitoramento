@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Áudio Pro</title>
+    <style>
+        body { 
+            background: #0b0e11; 
+            color: #f0f0f0; 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #161b22;
+            padding: 2.5rem;
+            border-radius: 24px;
+            border: 1px solid #30363d;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 { font-size: 1.1rem; font-weight: 500; margin-bottom: 2rem; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; }
+
+        .btn {
+            width: 90px;
+            height: 90px;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+            background: #21262d;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .btn-active {
+            background: #238636;
+            box-shadow: 0 0 25px rgba(35, 134, 54, 0.5);
+            transform: scale(1.05);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: #0d1117;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #8b949e;
+            border: 1px solid #30363d;
+            transition: all 0.3s ease;
+        }
+
+        .status-active {
+            color: #3fb950;
+            border-color: #238636;
+        }
+
+        .status-active::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            background: #3fb950;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 10px #3fb950;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Escuta Remota</h1>
+        <button id="mainBtn" class="btn">🎙️</button>
+        <div id="statusBadge" class="status-badge">
+            <span id="statusTxt">DESCONECTADO</span>
+        </div>
+    </div>
+
+    <script>
+        const mainBtn = document.getElementById('mainBtn');
+        const statusBadge = document.getElementById('statusBadge');
+        const statusTxt = document.getElementById('statusTxt');
+        
+        let audioCtx;
+        let socket;
+        let isRunning = false;
+        
+        // --- ATUALIZADO PARA O DOMÍNIO CLOUDFLARE ---
+        // Usamos 'wss' porque a Cloudflare exige conexão segura (HTTPS)
+        const serverUrl = 'wss://agendapro.dev.br';
+
+        function toggleEscuta() {
+            if (!isRunning) iniciar(); else parar();
+        }
+
+        function iniciar() {
+            // Inicializa o contexto de áudio
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+            
+            socket = new WebSocket(serverUrl);
+            socket.binaryType = 'arraybuffer';
+
+            socket.onopen = () => {
+                console.log("✅ Conectado ao servidor via Cloudflare");
+                socket.send("START");
+                updateUI(true);
+            };
+
+            socket.onmessage = async (event) => {
+                // Se receber dados binários, é o áudio vindo do celular
+                if (event.data instanceof ArrayBuffer && isRunning) {
+                    try {
+                        const audioData = new Int16Array(event.data);
+                        const floatData = new Float32Array(audioData.length);
+                        
+                        for (let i = 0; i < audioData.length; i++) {
+                            floatData[i] = audioData[i] / 32768;
+                        }
+
+                        if (audioCtx.state === 'suspended') {
+                            await audioCtx.resume();
+                        }
+
+                        const buffer = audioCtx.createBuffer(1, floatData.length, 16000);
+                        buffer.getChannelData(0).set(floatData);
+                        
+                        const source = audioCtx.createBufferSource();
+                        source.buffer = buffer;
+                        source.connect(audioCtx.destination);
+                        source.start();
+                    } catch (e) {
+                        console.error("Erro ao processar áudio:", e);
+                    }
+                }
+            };
+
+            socket.onclose = () => {
+                console.log("❌ Conexão fechada");
+                updateUI(false);
+            };
+            
+            socket.onerror = (e) => {
+                console.error("⚠️ Erro no WebSocket:", e);
+                updateUI(false);
+            };
+        }
+
+        function parar() {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send("STOP_SERVICE");
+            }
+            
+            setTimeout(() => {
+                if (socket) socket.close();
+                if (audioCtx) audioCtx.close();
+                updateUI(false);
+            }, 200);
+        }
+
+        function updateUI(active) {
+            isRunning = active;
+            if (active) {
+                mainBtn.classList.add('btn-active');
+                statusBadge.classList.add('status-active');
+                statusTxt.innerText = "OUVINDO...";
+            } else {
+                mainBtn.classList.remove('btn-active');
+                statusBadge.classList.remove('status-active');
+                statusTxt.innerText = "OFFLINE";
+            }
+        }
+
+        mainBtn.onclick = toggleEscuta;
+    </script>
+</body>
+</html>
