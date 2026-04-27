@@ -1,3 +1,10 @@
+// Bloqueia o arrasto da tela no mobile (firmeza total)
+document.addEventListener('touchmove', function(e) {
+    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+    }
+}, { passive: false });
+
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -5,7 +12,6 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const btn = document.getElementById('btn-login');
     const btnText = btn.querySelector('.btn-text');
     
-    // Reset de estado e limpeza de segurança
     errorMsg.classList.add('hidden');
     localStorage.removeItem('monitor_token'); 
     btn.disabled = true;
@@ -26,12 +32,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         const data = await response.json();
 
         if (data.success) {
-            // Guarda o novo token JWT
             localStorage.setItem('monitor_token', data.token);
-            // Redireciona (Admin ou Painel)
             window.location.href = data.redirect;
         } else {
-            // Exibe a mensagem vinda do servidor (ex: "Sua assinatura expirou")
             errorMsg.innerText = data.message || "Credenciais inválidas.";
             errorMsg.classList.remove('hidden');
             btn.disabled = false;

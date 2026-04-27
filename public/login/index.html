@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Acesso - Monitor Áudio Pro</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -18,12 +18,12 @@
             <form id="loginForm">
                 <div class="input-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="text" id="username" placeholder="E-mail ou Usuário" required inputmode="email">
+                    <input type="text" id="username" placeholder="E-mail ou Usuário" required inputmode="email" autocomplete="username">
                 </div>
                 
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Sua senha" required>
+                    <input type="password" id="password" placeholder="Sua senha" required autocomplete="current-password">
                 </div>
 
                 <button type="submit" id="btn-login">
