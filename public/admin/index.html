@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sagas Admin - Controle PRO</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="admin-container">
+        <header>
+            <div class="logo">SAGAS<span>ADMIN</span></div>
+            <div class="stats-row">
+                <div class="mini-stat">Ativos: <span id="count-ativos" class="online">0</span></div>
+                <div class="mini-stat">Expirados: <span id="count-expirados" class="offline">0</span></div>
+            </div>
+        </header>
+
+        <main class="admin-card">
+            <div class="action-bar">
+                <button class="btn-main" onclick="openModal('modalUsuario')">
+                    <i class="fas fa-user-plus"></i> NOVO ACESSO
+                </button>
+                <button class="btn-main btn-alt" onclick="openModal('modalAPK')">
+                    <i class="fas fa-cloud-upload-alt"></i> ATUALIZAR APK
+                </button>
+            </div>
+
+            <div class="lista-secao">
+                <div class="section-title">
+                    <i class="fas fa-users"></i> Clientes Monitorados
+                </div>
+                <div class="tabela-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Expiração</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-usuarios"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <footer>Sagas Monitor PRO &copy; 2026</footer>
+    </div>
+
+    <div id="modalUsuario" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-shield"></i> Criar Novo Acesso</h3>
+                <span class="close" onclick="closeModal('modalUsuario')">&times;</span>
+            </div>
+            <form id="adminForm">
+                <div class="input-group">
+                    <label>Usuário</label>
+                    <input type="text" id="username" placeholder="Login do cliente" required>
+                </div>
+                <div class="input-group">
+                    <label>Senha</label>
+                    <input type="text" id="password" placeholder="Senha temporária" required>
+                </div>
+                <div class="input-group">
+                    <label>WhatsApp</label>
+                    <input type="text" id="whatsapp" placeholder="Ex: 85996040748">
+                </div>
+                <div class="input-group">
+                    <label>Plano</label>
+                    <select id="plano" class="custom-select">
+                        <option value="1h">Teste (1 Hora)</option>
+                        <option value="7d" selected>Oficial (7 Dias)</option>
+                        <option value="30d">Mensal (30 Dias)</option>
+                    </select>
+                </div>
+                <button type="submit" id="btn-submit" class="btn-confirm">GERAR ACESSO</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalAPK" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-sync"></i> Atualizar APK no Banco</h3>
+                <span class="close" onclick="closeModal('modalAPK')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.85rem; color: #8b949e; margin-bottom: 15px;">Selecione o novo arquivo .apk para substituir a versão atual no banco de dados.</p>
+                <div class="input-group">
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="apkFile" accept=".apk">
+                    </div>
+                </div>
+                <button onclick="uploadAPKOnly()" id="btn-upload-apk" class="btn-confirm">SUBIR NOVO APK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

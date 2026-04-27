@@ -1,0 +1,106 @@
+:root {
+    --bg: #0d1117;
+    --card-bg: #161b22;
+    --border: #30363d;
+    --primary: #238636;
+    --primary-hover: #2ea043;
+    --text: #c9d1d9;
+    --accent: #58a6ff;
+    --error: #f85149;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 380px;
+    background: var(--card-bg);
+    padding: 40px 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+.logo { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+.logo span { color: var(--primary); }
+
+h2 { font-size: 1.3rem; color: #fff; margin-bottom: 5px; }
+p { font-size: 0.85rem; color: #8b949e; margin-bottom: 25px; }
+
+.input-group {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #484f58;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 15px 14px 45px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.95rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    transition: 0.2s;
+}
+
+button:hover { background: var(--primary-hover); transform: translateY(-1px); }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+#error-msg {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    background: rgba(248, 81, 73, 0.1);
+    color: var(--error);
+    border: 1px solid rgba(248, 81, 73, 0.3);
+    line-height: 1.4;
+}
+
+.hidden { display: none; }
+
+.footer-links { margin-top: 25px; font-size: 0.8rem; border-top: 1px solid var(--border); padding-top: 15px; }
+.footer-links a { color: var(--accent); text-decoration: none; font-weight: 600; }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso - Monitor Áudio Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">MONITOR<span>AUDIO</span></div>
+            <h2>Identificação</h2>
+            <p>Insira suas credenciais de acesso</p>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="text" id="username" placeholder="E-mail ou Usuário" required>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Sua senha" required>
+                </div>
+
+                <button type="submit" id="btn-login">
+                    <span class="btn-text">ENTRAR</span>
+                    <i class="fas fa-sign-in-alt"></i>
+                </button>
+            </form>
+
+            <div id="error-msg" class="hidden"></div>
+            
+            <div class="footer-links">
+                <p>Suporte: <a href="https://wa.me/85996040748" target="_blank">WhatsApp</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
